@@ -17,11 +17,14 @@ int main(int argc, char *argv[]){
         /*se está tudo ok, salva os arquivos nas strings*/ 
         strcpy(path_input_file,argv[1]);
         strcpy(path_output_file,argv[2]);
+        remove(path_output_file);
         read* r = read_file(path_input_file);
         /*pega a quantidade de instruções a serem executas*/
         int amount = r[0].value;
         /*cria o nó raiz*/
         branch root = NULL;
+        /*abre o arquivo de saída*/
+        FILE* out_file = fopen(path_output_file,"a+");;
         /*laço para executar as instruções */
         for(int i = 1; i <= amount; i++){
             /*verifica se é a função de incluir*/
@@ -39,38 +42,70 @@ int main(int argc, char *argv[]){
                 /*se for, verifica a ordem de impressão*/
                 /*1, preordem*/
                 if(r[i].value == 1){
-                    save_preorder(root,path_output_file);
+                    /*printa o <*/
+                    fprintf(out_file,"<");
+                    /*chama a função para salvar na ordem 1*/
+                    save_preorder(root,out_file);
+                    /*fecha com > e um pulo de linha*/
+                    fprintf(out_file,">\n");
+                    /*mostra no console a árvore na ordem*/
                     show_tree_preorder(root);
+                    /*e um pula linha*/
                     printf("\n");
                 }
                 /*2, inordem*/
                 else if(r[i].value == 2){
-                    save_inorder(root,path_output_file);
+                    /*printa o <*/
+                    fprintf(out_file,"<");
+                    /*chama a função para salvar na ordem 2*/
+                    save_inorder(root,out_file);
+                    /*fecha com > e um pulo de linha*/
+                    fprintf(out_file,">\n");
+                    /*mostra no console a árvore na ordem*/
                     show_tree_inorder(root);
+                    /*e um pula linha*/
                     printf("\n");
                 }
                 /*3, posordem*/
                 else if(r[i].value == 3){
-                    save_postorder(root,path_output_file);
+                    /*printa o <*/
+                    fprintf(out_file,"<");
+                    /*chama a função para salvar na ordem 3*/
+                    save_postorder(root,out_file);
+                    /*fecha com > e um pulo de linha*/
+                    fprintf(out_file,">\n");
+                    /*mostra no console a árvore na ordem*/
                     show_tree_postorder(root);
+                    /*e um pula linha*/
                     printf("\n");
                 }
             }
             /*verifica se a instrução é busca, se for*/
             else if(strcmp(r[i].command,"BUSCA") == 0){
                 /*chama a função de busca de um valor*/
+                /*se o valor for diferente de NULL*/
                 if(verify_value_on_tree(root,r[i].value) != NULL){
+                    /*printa no arquivo*/
+                    fprintf(out_file,"%i\n",r[i].value);
+                    /*e no console*/
                     printf("%i\n",r[i].value);
                 }
+                /*senão*/
                 else{
-                    printf("elemento %i não encontrado\n",r[i].value);
+                    /*mostra que o elemento não foi encontrado no console e no arquivo*/
+                    fprintf(out_file,"Elemento %i não encontrado\n",r[i].value);
+                    printf("Elemento %i não encontrado\n",r[i].value);
                 }
             }
         }
-        /*executa */
+        /*fecha o arquivo de saída*/
+        fclose(out_file);
+        /*destroi a árvore*/
+        root = destroy_tree(root);
     }
     /*senão mostra erro*/
     else{
+        /*Erro para formato errado de entrada de arquivos*/
         printf("Formato de entrada da aplicação está incorreto, deve ser a aplicação e os arquivos de entrada e saída!\n");
     }
     return 0;

@@ -29,4 +29,6 @@ branch verify_value_on_tree(branch br, int value);
 /*função de deletar um ramo na árvore, retorna a referência do nó raiz, recebe por parametro o nó raiz 
 e o valor a ser removido*/
 branch delete_value_on_tree(branch root, int value);
+/*função para destroir a árvore, removendo todos os nós*/
+branch destroy_tree(branch root);
 #endif

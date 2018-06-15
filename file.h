@@ -1,5 +1,6 @@
 #ifndef FILE_H
 #define FILE_H
+#include "tree.h"
 /*estrutura para leitura do arquivo*/
 typedef struct READ{
     int value;

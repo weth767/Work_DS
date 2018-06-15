@@ -1,0 +1,7 @@
+<(9)(8)(5)(4)(10)>
+<(9)(5)(4)(10)>
+Elemento 7 não encontrado
+9
+Elemento 8 não encontrado
+<(5)(4)(10)(9)>
+<(5)(4)(9)(10)>

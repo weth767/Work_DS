@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "file.h"
-#include "tree.c"
+#include "tree.h"
 /*função para contar as linhas de instrução do arquivo*/
 /*como sempre tem uma instrução fim, a contagem iniciará em 0*/
 int count_lines(FILE* file){
@@ -105,20 +105,26 @@ read* read_file(char path[]){
     return r;
 }
 /*função para salvar os valores da árvore em pre ordem*/
-void save_preorder(branch root,FILE* file){
-    fprintf(file,"%i ",root->value);
-    save_preorder(root->left,file);
-    save_preorder(root->right,file);
+void save_preorder(branch root, FILE* file){
+    if(root != NULL && file != NULL){
+        fprintf(file,"(%i)",root->value);
+        save_preorder(root->left,file);
+        save_preorder(root->right,file);
+    }
 }
 /*função para salvar os valores da árvore em ordem*/
-void save_inorder(branch root,FILE* file){
-    fprintf(file,"%i ",root->value);
-    save_inorder(root->left,file);
-    save_inorder(root->right,file);
+void save_inorder(branch root, FILE* file){
+     if(root != NULL && file != NULL){
+        save_preorder(root->left,file);
+        fprintf(file,"(%i)",root->value);
+        save_preorder(root->right,file);
+    }
 }
 /*função para salvar os valores da árvore em pos ordem*/
-void save_postorder(branch root,FILE* file){
-    fprintf(file,"%i ",root->value);
-    save_postorder(root->left,file);
-    save_postorder(root->right,file);
+void save_postorder(branch root, FILE* file){
+    if(root != NULL && file != NULL){
+        save_preorder(root->left,file);
+        save_preorder(root->right,file);
+        fprintf(file,"(%i)",root->value);
+    }
 }

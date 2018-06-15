@@ -2,12 +2,6 @@
 #include <stdlib.h>
 #include "tree.h"
 
-/*enumeração para simular o tipo boolean*/
-enum boolean {
-    true = 1, false = 0
-};
-/*criando o tipo bool*/
-typedef  enum boolean  bool;
 
 /*função que retorna o maior valor entre dois inteiros passados por parametro*/
 int bigger(int a, int b){
@@ -54,9 +48,9 @@ int balance_factor(branch br){
     return height(br->left) - height(br->right);
 }
 /*função para inserir um ramo na árvore*/
-branch insert_on_tree(branch root, int value){
+branch insert_on_tree(branch node, int value){
     /*se não há ramos ligados a raiz*/
-    if(root == NULL){
+    if(node == NULL){
         /*aloca uma nova posição para o novo ramo*/
         branch br = (branch)malloc(sizeof(struct BRANCH));
         /*insere o valor*/
@@ -69,62 +63,74 @@ branch insert_on_tree(branch root, int value){
         return(br);
     }
     /*para um valor menor do que o o valor do ramo raiz, insere na esquerda*/
-    else if(value < root->value){
-        root->left = insert_on_tree(root->left,value);
+    else if(value < node->value){
+        node->left = insert_on_tree(node->left,value);
     }
     /*para um valor maior que o valor do ramo raiz, insere na direita*/
-    else if(value > root->value){
-        root->right = insert_on_tree(root->right,value);
+    else if(value > node->value){
+        node->right = insert_on_tree(node->right,value);
     }
     /*valores iguais não são usados em árvore*/
     else{
-        return root;
+        return node;
     }
     /*atualiza a altura do nó raiz*/
-    root->height = bigger(height(root->left),height(root->right)) + 1;
+    node->height = bigger(height(node->left),height(node->right)) + 1;
+    /*guarda o balanceamento do nó*/
+    int balance = balance_factor(node);
     /*agora vem a parte do balenceamento da árvore*/
     /*primeiro caso, dois fatores a direita*/
-    if(balance_factor(root) > 1 && value < root->left->value){
-        return right_rotate(root);
+    if(balance > 1 && balance_factor(node->left) >= 0){
+        return right_rotate(node);
     }
     /*segundo caso, dois fatores a esqueda*/
-    else if(balance_factor(root) < -1 && value > root->right->value){
-        return left_rotate(root);
+    else if(balance < -1 && balance_factor(node->right) <= 0){
+        return left_rotate(node);
     }
     /*terceiro caso, um fator a esquerda outro a direita*/
-    else if(balance_factor(root) > 1 && value > root->left->value){
-        root->left = left_rotate(root->left);
-        return right_rotate(root);
+    else if(balance_factor(node) > 1 && value > node->left->value){
+        node->left = left_rotate(node->left);
+        return right_rotate(node);
     }
     /*quarto caso, um fator a direita e outra a esquerda*/
-    else if(balance_factor(root) < -1 && value < root->right->value){
-        root->right = right_rotate(root->right);
-        return left_rotate(root);
+    else if(balance_factor(node) < -1 && value < node->right->value){
+        node->right = right_rotate(node->right);
+        return left_rotate(node);
     }
-    return root;
+    /*retorna a referência do nó*/
+    return node;
 }
 /*mostra os valores na árvore no percurso preordem*/
-void show_tree_preorder(branch root){
-    if(root != NULL){
-        printf("%i ",root->value);
-        show_tree_preorder(root->left);
-        show_tree_preorder(root->right); 
+/*indo de nó em nó, recebe por parametro o nó*/
+void show_tree_preorder(branch node){
+    /*verifica se o nó não está null*/
+    if(node != NULL){
+        /*senão tiver vai mostrando os valores em recursão, até que seja null*/
+        printf("%i ",node->value);
+        show_tree_preorder(node->left);
+        show_tree_preorder(node->right); 
     }
 }
 /*mostra os valores na árvore no percurso inordem*/
-void show_tree_inorder(branch root){
-    if(root != NULL){
-        show_tree_inorder(root->left);
-        printf("%i ",root->value);
-        show_tree_inorder(root->right); 
+/*indo de nó em nó, recebe por parametro o nó*/
+void show_tree_inorder(branch node){
+     /*verifica se o nó não está null*/
+    if(node != NULL){
+        /*senão tiver vai mostrando os valores em recursão, até que seja null*/
+        show_tree_inorder(node->left);
+        printf("%i ",node->value);
+        show_tree_inorder(node->right); 
     }
 }
 /*mostra os valores na árvore no percurso posordem*/
-void show_tree_postorder(branch root){
-    if(root != NULL){
-        show_tree_postorder(root->left);
-        show_tree_postorder(root->right);
-        printf("%i ",root->value); 
+/*indo de nó em nó, recebe por parametro o nó*/
+void show_tree_postorder(branch node){
+     /*verifica se o nó não está null*/
+    if(node != NULL){
+         /*senão tiver vai mostrando os valores em recursão, até que seja null*/
+        show_tree_postorder(node->left);
+        show_tree_postorder(node->right);
+        printf("%i ",node->value); 
     }
 }
 /*função para calcular o grau do ramo*/
@@ -147,10 +153,10 @@ int calculate_branch_degree(branch br){
     }
 }
 /*função para calcular o nível de determinado nó da árvore*/
-int calculate_level(branch root,branch br){
+int calculate_level(branch node, branch br){
     int level = 0;
     /*um auxiliar guarda o root*/
-    branch helper = root;
+    branch helper = node;
     /*vai até o helper ser igual ao ramo passado por parametro*/
     while(helper != br){
         /*se o valor do ramo, for maior que o nó atual, vai para direita*/
@@ -198,70 +204,94 @@ branch left_value(branch br){
     return current;
 }
 /*função para deletar valores da árvore e rebalance-la depois da exclusão*/
-branch delete_value_on_tree(branch root, int value){
+branch delete_value_on_tree(branch node, int value){
     /*primeiro caso, árvore vazia*/
-    if (root == NULL){
-        return root;
+    if(node == NULL){
+        return node;
     }
     /*segundo caso, o valor a ser deletado é menor que o valor da raiz*/
-    else if (value < root->value){
-        root->left = delete_value_on_tree(root->left, value);
+    else if (value < node->value){
+        node->left = delete_value_on_tree(node->left, value);
     }
     /*terceiro caso, o valor a ser deletado é maior que o valor da raiz*/
-    else if(value > root->value){
-        root->right = delete_value_on_tree(root->right, value);
+    else if(value > node->value){
+        node->right = delete_value_on_tree(node->right, value);
     }
-    /*valores iguais não são aceitos em uma árvore binária*/
+    /*valor a ser deletado encontrado*/
     else{
         /*valor a ser deletado*/
-        if( (root->left == NULL) || (root->right == NULL)){
-            branch temp = root->left ? root->left : root->right;
+        if( (node->left == NULL) || (node->right == NULL)){
+            branch temp = node->left ? node->left : node->right;
             /*se o nó não tiver filhos*/
             if (temp == NULL){
                 /*guarda o valor*/
-                temp = root;
+                temp = node;
                 /*e anula o raiz*/
-                root = NULL;
+                node = NULL;
             }
             /*caso de um filho só do nó*/
             else{
-                /*limpa o valor*/
-                *root = *temp;
-                /*limpa o espaço de memória*/
-                free(temp);
+                /*faz a troca dos valores*/
+                *node = *temp;      
             } 
+            /*limpa o espaço de memória*/
+            free(temp);
         }
         /*entra nos casos de remoção de dois filhos*/
         else{
             /*pega o valor mais a esquerda, e o primeiro a direita dele*/
-            branch temp = left_value(root->right);
+            branch temp = left_value(node->right);
             /*troca esse valor com o temporario*/
-            root->value = temp->value;
+            node->value = temp->value;
             /*deleta o valor que foi trocado*/
-            root->right = delete_value_on_tree(root->right, temp->value);
+            node->right = delete_value_on_tree(node->right, temp->value);
         }
     }
+    /*verifica se essa remoção já deixou a árvore vazia, se sim*/
+    if(node == NULL){
+        /*retorna o ponteiro e sai da função*/
+        return node;
+    }
+    /*guarda o fator de balanceamento do nó para utiliza-lo*/
+    int balance = balance_factor(node);
     /*agora atualiza a altura*/
-    root->height = 1 + bigger(height(root->left),height(root->right));
+    node->height = 1 + bigger(height(node->left),height(node->right));
     /*agora vem a parte do balenceamento da árvore*/
     /*primeiro caso, dois fatores a direita*/
-    if(balance_factor(root) > 1 && value < root->left->value){
-        return right_rotate(root);
+    if(balance > 1 && balance_factor(node->left) >= 0){
+        return right_rotate(node);
     }
     /*segundo caso, dois fatores a esqueda*/
-    else if(balance_factor(root) < -1 && value > root->right->value){
-        return left_rotate(root);
+    else if(balance < -1 && balance_factor(node->right) <= 0){
+        return left_rotate(node);
     }
     /*terceiro caso, um fator a esquerda outro a direita*/
-    else if(balance_factor(root) > 1 && value > root->left->value){
-        root->left = left_rotate(root->left);
-        return right_rotate(root);
+    else if(balance_factor(node) > 1 && value > node->left->value){
+        node->left = left_rotate(node->left);
+        return right_rotate(node);
     }
     /*quarto caso, um fator a direita e outra a esquerda*/
-    else if(balance_factor(root) < -1 && value < root->right->value){
-        root->right = right_rotate(root->right);
-        return left_rotate(root);
+    else if(balance_factor(node) < -1 && value < node->right->value){
+        node->right = right_rotate(node->right);
+        return left_rotate(node);
     }
     /*retorna o ponteiro da raiz*/
+    return node;
+}
+/*função para destruir a árvore*/
+/*recebe por parametro o nó raiz*/
+branch destroy_tree(branch root){
+    /*enquanto o nó raiz diferente de NULL*/
+    /*executa o laço*/
+    while(root != NULL){
+        /*vai deletando os valores da árvore um a um e trocando as raizes*/
+        root = delete_value_on_tree(root,root->value);
+    }
+    /*quando sair do laço e a raiz for igual a null*/
+    /*da um free no ponteiro por garantia*/
+    free(root);
+    /*coloca o ponteiro para null*/
+    root = NULL;
+    /*e retorna ele*/
     return root;
 }
