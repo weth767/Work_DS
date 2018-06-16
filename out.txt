@@ -1,7 +1,39 @@
-<(9)(8)(5)(4)(10)>
-<(9)(5)(4)(10)>
-Elemento 7 não encontrado
-9
-Elemento 8 não encontrado
-<(5)(4)(10)(9)>
-<(5)(4)(9)(10)>
+<(81)>
+<(81)>
+<(81)>
+<(81)>
+<(108)(81)>
+Elemento 880 não encontrado
+Elemento 105 não encontrado
+Elemento 159 não encontrado
+<(957)(108)>
+<(108)(957)>
+108
+<(957)(108)>
+<(108)(957)(894)(297)>
+<(297)(108)(957)>
+<(108)(297)(957)>
+<(297)(108)(957)>
+Elemento 703 não encontrado
+957
+Elemento 423 não encontrado
+<(108)(297)(957)>
+Elemento 173 não encontrado
+Elemento 81 não encontrado
+Elemento 574 não encontrado
+<(108)(319)(957)(555)(996)>
+Elemento 776 não encontrado
+<(108)(319)(957)(555)(878)(996)>
+Elemento 315 não encontrado
+<(108)(319)(957)(555)(878)(996)>
+<(319)(108)(957)(555)(878)(996)>
+<(108)(319)(957)(555)(878)(996)>
+<(108)(957)(555)(878)(996)(319)>
+<(108)(319)(957)(555)(878)(996)>
+<(108)(136)(957)(555)(878)(996)(319)>
+<(108)(136)(319)(957)(555)(878)(996)>
+<(319)(108)(136)(957)(555)(878)(996)>
+957
+Elemento 32 não encontrado
+Elemento 996 não encontrado
+Elemento 941 não encontrado

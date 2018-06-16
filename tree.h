@@ -31,4 +31,5 @@ e o valor a ser removido*/
 branch delete_value_on_tree(branch root, int value);
 /*função para destroir a árvore, removendo todos os nós*/
 branch destroy_tree(branch root);
+void draw_tree(branch root);
 #endif

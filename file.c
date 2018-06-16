@@ -105,26 +105,32 @@ read* read_file(char path[]){
     return r;
 }
 /*função para salvar os valores da árvore em pre ordem*/
-void save_preorder(branch root, FILE* file){
-    if(root != NULL && file != NULL){
-        fprintf(file,"(%i)",root->value);
-        save_preorder(root->left,file);
-        save_preorder(root->right,file);
+void save_preorder(branch node, FILE* file){
+    /*verifica se o nó não é null e o ponteiro do arquivo também*/
+    if(node != NULL && file != NULL){
+        /*senão estiver, salva o percurso no arquivo*/
+        fprintf(file,"(%i)",node->value);
+        save_preorder(node->left,file);
+        save_preorder(node->right,file);
     }
 }
 /*função para salvar os valores da árvore em ordem*/
-void save_inorder(branch root, FILE* file){
-     if(root != NULL && file != NULL){
-        save_preorder(root->left,file);
-        fprintf(file,"(%i)",root->value);
-        save_preorder(root->right,file);
+void save_inorder(branch node, FILE* file){
+     /*verifica se o nó não é null e o ponteiro do arquivo também*/
+     if(node != NULL && file != NULL){
+        /*senão estiver, salva o percurso no arquivo*/
+        save_preorder(node->left,file);
+        fprintf(file,"(%i)",node->value);
+        save_preorder(node->right,file);
     }
 }
 /*função para salvar os valores da árvore em pos ordem*/
-void save_postorder(branch root, FILE* file){
-    if(root != NULL && file != NULL){
-        save_preorder(root->left,file);
-        save_preorder(root->right,file);
-        fprintf(file,"(%i)",root->value);
+void save_postorder(branch node, FILE* file){
+    /*verifica se o nó não é null e o ponteiro do arquivo também*/
+    if(node != NULL && file != NULL){
+        /*senão estiver, salva o percurso no arquivo*/
+        save_preorder(node->left,file);
+        save_preorder(node->right,file);
+        fprintf(file,"(%i)",node->value);
     }
 }

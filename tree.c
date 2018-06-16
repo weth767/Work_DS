@@ -5,12 +5,16 @@
 
 /*função que retorna o maior valor entre dois inteiros passados por parametro*/
 int bigger(int a, int b){
+    /*retorna o maior entre a e b*/
     return (a > b)? a : b;
 }
 /*função para retornar a altura do ramo*/
 int height(branch br){
+    /*se o nó for nulo, não há altura*/
     if (br == NULL)
+    /*então retorna 0*/
         return 0;
+    /*senão retorna a altura*/
     return br->height;
 }
 /*função para girar o ramo para direita*/
@@ -60,18 +64,22 @@ branch insert_on_tree(branch node, int value){
         br->right = NULL;
         /*e coloca a altura como 1*/
         br->height = 0;
+        /*retorna o ponteiro do nó*/
         return(br);
     }
     /*para um valor menor do que o o valor do ramo raiz, insere na esquerda*/
     else if(value < node->value){
+        /*vai para esquerda*/
         node->left = insert_on_tree(node->left,value);
     }
     /*para um valor maior que o valor do ramo raiz, insere na direita*/
     else if(value > node->value){
+        /*vai para direita*/
         node->right = insert_on_tree(node->right,value);
     }
     /*valores iguais não são usados em árvore*/
     else{
+        /*retorna o nó*/
         return node;
     }
     /*atualiza a altura do nó raiz*/
@@ -81,20 +89,26 @@ branch insert_on_tree(branch node, int value){
     /*agora vem a parte do balenceamento da árvore*/
     /*primeiro caso, dois fatores a direita*/
     if(balance > 1 && balance_factor(node->left) >= 0){
+        /*retoção para direita*/
         return right_rotate(node);
     }
     /*segundo caso, dois fatores a esqueda*/
     else if(balance < -1 && balance_factor(node->right) <= 0){
+        /*rotação para esquerda*/
         return left_rotate(node);
     }
     /*terceiro caso, um fator a esquerda outro a direita*/
     else if(balance_factor(node) > 1 && value > node->left->value){
+        /*rotação para esquerda*/
         node->left = left_rotate(node->left);
+        /*depois para direita*/
         return right_rotate(node);
     }
     /*quarto caso, um fator a direita e outra a esquerda*/
     else if(balance_factor(node) < -1 && value < node->right->value){
+        /*rotação para direita*/
         node->right = right_rotate(node->right);
+        /*depois para esquerda*/
         return left_rotate(node);
     }
     /*retorna a referência do nó*/
@@ -294,4 +308,15 @@ branch destroy_tree(branch root){
     root = NULL;
     /*e retorna ele*/
     return root;
+}
+
+void draw_tree(branch root){
+    if(root != NULL){
+        printf("  %i\n",root->value);
+        if(root->right != NULL && root->left != NULL){
+            printf("%i ",root->left->value);
+            printf("  %i\n",root->right->value);
+        }
+    }
+    
 }

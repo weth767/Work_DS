@@ -3,7 +3,7 @@
 #include <string.h>
 #include "file.h"
 #include "tree.h"
-
+/*função principal*/
 int main(int argc, char *argv[]){
     /*variáveis para os arquivos de entrada e saída*/
     char path_input_file[100];
@@ -17,7 +17,9 @@ int main(int argc, char *argv[]){
         /*se está tudo ok, salva os arquivos nas strings*/ 
         strcpy(path_input_file,argv[1]);
         strcpy(path_output_file,argv[2]);
+        /*remove o arquivo anterior para não sobreescrever*/
         remove(path_output_file);
+        /*lê o arquivo e recebe os dados na struct*/
         read* r = read_file(path_input_file);
         /*pega a quantidade de instruções a serem executas*/
         int amount = r[0].value;
@@ -99,6 +101,7 @@ int main(int argc, char *argv[]){
             }
         }
         /*fecha o arquivo de saída*/
+        //draw_tree(root);
         fclose(out_file);
         /*destroi a árvore*/
         root = destroy_tree(root);
