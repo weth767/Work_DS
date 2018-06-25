@@ -51,9 +51,9 @@ int main(int argc, char *argv[]){
                     /*fecha com > e um pulo de linha*/
                     fprintf(out_file,">\n");
                     /*mostra no console a árvore na ordem*/
-                    show_tree_preorder(root);
+                   //show_tree_preorder(root);
                     /*e um pula linha*/
-                    printf("\n");
+                    //printf("\n");
                 }
                 /*2, inordem*/
                 else if(r[i].value == 2){
@@ -64,9 +64,9 @@ int main(int argc, char *argv[]){
                     /*fecha com > e um pulo de linha*/
                     fprintf(out_file,">\n");
                     /*mostra no console a árvore na ordem*/
-                    show_tree_inorder(root);
+                    //show_tree_inorder(root);
                     /*e um pula linha*/
-                    printf("\n");
+                    //printf("\n");
                 }
                 /*3, posordem*/
                 else if(r[i].value == 3){
@@ -77,9 +77,9 @@ int main(int argc, char *argv[]){
                     /*fecha com > e um pulo de linha*/
                     fprintf(out_file,">\n");
                     /*mostra no console a árvore na ordem*/
-                    show_tree_postorder(root);
+                    //show_tree_postorder(root);
                     /*e um pula linha*/
-                    printf("\n");
+                    //printf("\n");
                 }
             }
             /*verifica se a instrução é busca, se for*/
@@ -90,18 +90,19 @@ int main(int argc, char *argv[]){
                     /*printa no arquivo*/
                     fprintf(out_file,"%i\n",r[i].value);
                     /*e no console*/
-                    printf("%i\n",r[i].value);
+                    //printf("%i\n",r[i].value);
                 }
                 /*senão*/
                 else{
                     /*mostra que o elemento não foi encontrado no console e no arquivo*/
                     fprintf(out_file,"Elemento %i não encontrado\n",r[i].value);
-                    printf("Elemento %i não encontrado\n",r[i].value);
+                    //printf("Elemento %i não encontrado\n",r[i].value);
                 }
             }
         }
+        draw_tree(root);
+        printf("\n");
         /*fecha o arquivo de saída*/
-        //draw_tree(root);
         fclose(out_file);
         /*destroi a árvore*/
         root = destroy_tree(root);

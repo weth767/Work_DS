@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tree.h"
-
+#define space 5
 
 /*função que retorna o maior valor entre dois inteiros passados por parametro*/
 int bigger(int a, int b){
@@ -11,9 +11,16 @@ int bigger(int a, int b){
 /*função para retornar a altura do ramo*/
 int height(branch br){
     /*se o nó for nulo, não há altura*/
-    if (br == NULL)
-    /*então retorna 0*/
+    if (br == NULL){
+        /*então retorna 0*/
         return 0;
+    }
+    if(height(br->left) < height(br->right)){
+        return height(br->right) + 1;
+    }
+    else{
+        return height(br->left) + 1;
+    }  
     /*senão retorna a altura*/
     return br->height;
 }
@@ -88,12 +95,12 @@ branch insert_on_tree(branch node, int value){
     int balance = balance_factor(node);
     /*agora vem a parte do balenceamento da árvore*/
     /*primeiro caso, dois fatores a direita*/
-    if(balance > 1 && balance_factor(node->left) >= 0){
+    if(balance > 1 && value < node->left->value){
         /*retoção para direita*/
         return right_rotate(node);
     }
     /*segundo caso, dois fatores a esqueda*/
-    else if(balance < -1 && balance_factor(node->right) <= 0){
+    else if(balance < -1 && value > node->right->value){
         /*rotação para esquerda*/
         return left_rotate(node);
     }
@@ -309,14 +316,64 @@ branch destroy_tree(branch root){
     /*e retorna ele*/
     return root;
 }
-
-void draw_tree(branch root){
-    if(root != NULL){
-        printf("  %i\n",root->value);
-        if(root->right != NULL && root->left != NULL){
-            printf("%i ",root->left->value);
-            printf("  %i\n",root->right->value);
+void draw_horizontal_tree(branch node,int depth, char *path, int right){
+    // stopping condition
+    if (node == NULL){
+        return;
+    }
+    // increase spacing
+    depth++;
+    // start with direita no
+    draw_horizontal_tree(node->right, depth, path, 1);
+    // set | draw map
+    path[depth-2] = 0;
+    if(right){
+        path[depth-2] = 1;
+    }
+    if(node->left){
+        path[depth-1] = 1;
+    }
+    // print root after spacing
+    printf("\n");
+    for(int i=0; i<depth-1; i++){
+        if(i == depth-2){
+            printf("╬");
+        }
+        else if(path[i]){
+            printf("║");
+        }
+        else{
+            printf(" ");
+        }
+        for(int j=1; j<space; j++){
+            if(i < depth-2){
+                printf(" ");
+            }
+            else{
+                printf("═");
+            }
         }
     }
-    
+    printf("%d\n", node->value);
+    // vertical espacors below
+    for(int i=0; i<depth; i++){
+        if(path[i]){
+            printf("║");
+        }
+        else{
+            printf(" ");
+        }
+        for(int j=1; j<space; j++){
+            printf(" ");
+        }
+    }
+    // go to esquerda no
+    draw_horizontal_tree(node->left,depth, path, 0);
+}
+//primary fuction
+void draw_tree(branch node){
+    // should check if we don't exceed this somehow..
+    char path[255] = {};
+    //initial depth is 0
+    draw_horizontal_tree(node, 0, path, 0);
 }
