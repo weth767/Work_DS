@@ -119,9 +119,9 @@ void save_inorder(branch node, FILE* file){
      /*verifica se o nó não é null e o ponteiro do arquivo também*/
      if(node != NULL && file != NULL){
         /*senão estiver, salva o percurso no arquivo*/
-        save_preorder(node->left,file);
+        save_inorder(node->left,file);
         fprintf(file,"(%i)",node->value);
-        save_preorder(node->right,file);
+        save_inorder(node->right,file);
     }
 }
 /*função para salvar os valores da árvore em pos ordem*/
@@ -129,8 +129,8 @@ void save_postorder(branch node, FILE* file){
     /*verifica se o nó não é null e o ponteiro do arquivo também*/
     if(node != NULL && file != NULL){
         /*senão estiver, salva o percurso no arquivo*/
-        save_preorder(node->left,file);
-        save_preorder(node->right,file);
+        save_postorder(node->left,file);
+        save_postorder(node->right,file);
         fprintf(file,"(%i)",node->value);
     }
 }
